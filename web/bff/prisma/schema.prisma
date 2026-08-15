@@ -1,0 +1,134 @@
+// bff/prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator pothos {
+  provider      = "prisma-pothos-types"
+  output        = "../src/__generated__/pothos-prisma-types.ts"
+  clientOutput  = "../../node_modules/@prisma/client"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model ModelUser {
+  id                BigInt       @id @default(autoincrement())
+  createdTime       DateTime     @default(now()) @map("created_time")
+  updatedTime       DateTime     @updatedAt      @map("updated_time")
+  isDeleted         Boolean      @default(false)  @map("is_deleted")
+  username          String       @unique         @map("username")
+  primaryEmail      String?      @unique         @map("primary_email")
+  data              Json         @map("data")
+
+  authIdentities       AuthIdentity[]
+  sessions             Session[]
+  personalAccessTokens PersonalAccessToken[]
+  favorites            Favorite[]
+  @@map("users")
+}
+
+enum AuthProvider {
+  GOOGLE
+}
+
+model AuthIdentity {
+  id                BigInt       @id @default(autoincrement())
+  createdTime       DateTime     @default(now()) @map("created_time")
+  userId            BigInt       @map("user_id")
+  user              ModelUser    @relation(fields: [userId], references: [id])
+  provider          AuthProvider
+  providerAccountId String       @map("provider_account_id")
+  email             String
+
+  @@unique([provider, providerAccountId])
+  @@map("auth_identities")
+}
+
+model Session {
+  id          BigInt    @id @default(autoincrement())
+  createdTime DateTime  @default(now()) @map("created_time")
+  expiresAt   DateTime  @map("expires_at")
+  tokenHash   String    @unique @map("token_hash")
+  userId      BigInt    @map("user_id")
+  user        ModelUser @relation(fields: [userId], references: [id])
+
+  @@map("sessions")
+}
+
+model PersonalAccessToken {
+  id           BigInt    @id @default(autoincrement())
+  createdTime  DateTime  @default(now())  @map("created_time")
+  lastUsedTime DateTime? @map("last_used_time")
+  label        String
+  tokenHash    String    @unique @map("token_hash")
+  userId       BigInt    @map("user_id")
+  user         ModelUser @relation(fields: [userId], references: [id])
+
+  @@map("personal_access_tokens")
+}
+
+model Publisher {
+  id          BigInt   @id @default(autoincrement())
+  createdTime DateTime @default(now()) @map("created_time")
+  updatedTime DateTime @updatedAt      @map("updated_time")
+  isDeleted   Boolean  @default(false) @map("is_deleted")
+  name        String   @map("name")
+
+  books       Book[]
+
+  @@map("publishers")
+}
+
+model Author {
+  id          BigInt   @id @default(autoincrement())
+  createdTime DateTime @default(now()) @map("created_time")
+  updatedTime DateTime @updatedAt      @map("updated_time")
+  isDeleted   Boolean  @default(false) @map("is_deleted")
+  name        String   @map("name")
+  bio         String?  @map("bio")
+
+  // Implicit many-to-many — Prisma manages the join table itself, no
+  // explicit join model needed since there's no extra data to carry per
+  // (book, author) pair. Contrast with Favorite below.
+  books       Book[]
+
+  @@map("authors")
+}
+
+model Book {
+  id              BigInt    @id @default(autoincrement())
+  createdTime     DateTime  @default(now()) @map("created_time")
+  updatedTime     DateTime  @updatedAt      @map("updated_time")
+  isDeleted       Boolean   @default(false) @map("is_deleted")
+  title           String    @map("title")
+  publicationYear Int?      @map("publication_year")
+
+  publisherId     BigInt    @map("publisher_id")
+  publisher       Publisher @relation(fields: [publisherId], references: [id])
+
+  authors         Author[]
+  favoritedBy     Favorite[]
+
+  @@map("books")
+}
+
+// Explicit join model (not an implicit relation list) specifically because
+// it carries its own data (`createdTime`, i.e. "favorited at") — the other
+// idiom Prisma supports for many-to-many, alongside Book<->Author's plain
+// implicit form above.
+model Favorite {
+  id          BigInt    @id @default(autoincrement())
+  createdTime DateTime  @default(now()) @map("created_time")
+
+  userId      BigInt    @map("user_id")
+  user        ModelUser @relation(fields: [userId], references: [id])
+
+  bookId      BigInt    @map("book_id")
+  book        Book      @relation(fields: [bookId], references: [id])
+
+  @@unique([userId, bookId])
+  @@map("favorites")
+}

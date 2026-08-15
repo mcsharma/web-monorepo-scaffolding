@@ -1,0 +1,37 @@
+  {
+    "compilerOptions": {
+      /* 1. Core Environment */
+      "module": "ESNext",
+      "target": "ES2023",
+      "lib": ["ES2023", "DOM", "DOM.Iterable"],
+      "types": ["vite/client"],
+      "jsx": "react-jsx",
+      "skipLibCheck": true,
+
+      /* 2. Modern Bundler Mode (Optimized for Vite + Relay) */
+      "moduleResolution": "bundler",
+      "allowImportingTsExtensions": true,
+      "verbatimModuleSyntax": true,
+      "moduleDetection": "force",
+      "paths": {
+        "@/*": ["./src/*"]
+      },
+
+      /* 3. Strict Safety Flags (Borrowed from your previous project) */
+      "strict": true,
+      "noUnusedLocals": true,
+      "noUnusedParameters": true,
+      "noFallthroughCasesInSwitch": true,
+      "noUncheckedSideEffectImports": true,
+      "erasableSyntaxOnly": true, // Ensures fast build times by avoiding complex TS transforms
+      "useDefineForClassFields": true,
+
+      /* 4. Standard SPA Mode (Typecheck only, no output files) */
+      "noEmit": true
+      },
+    "include": ["src"],
+    "references": [
+      { "path": "../bff" },
+      { "path": "./tsconfig.node.json" }
+    ]
+  }

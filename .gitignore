@@ -1,0 +1,54 @@
+# ─── Dependencies ────────────────────────────────────────────────
+node_modules/
+
+# ─── Build outputs ───────────────────────────────────────────────
+dist/
+build/
+
+# ─── TypeScript ──────────────────────────────────────────────────
+*.tsbuildinfo
+
+# ─── Environment variables ───────────────────────────────────────
+.env
+.env.*
+!.env.example
+!services/hg/vm/.env.prod.example
+!services/hg/vm/.env.test.example
+!services/git/vm/.env.prod.example
+!services/git/vm/.env.test.example
+
+# hooks/post-receive's own secrets file — doesn't match the .env.* pattern
+# above (see services/git/vm/hook-config.*.env.example for the templates,
+# which also don't match this pattern since they end in .env.example, not
+# .env — no negation exception needed for them).
+services/git/vm/hook-config.*.env
+
+# ─── Logs ────────────────────────────────────────────────────────
+*.log
+logs/
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ─── Prisma ──────────────────────────────────────────────────────
+# schema.prisma and migrations are committed; __generated__/ is committed
+
+# ─── Testing & Coverage ──────────────────────────────────────────
+coverage/
+.nyc_output/
+
+# ─── Vite ────────────────────────────────────────────────────────
+.vite/
+
+# ─── Local hg repo storage (see services/hg/README.md) ───────────
+
+# ─── OS & Editor artifacts ───────────────────────────────────────
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+*.swp
+*.swo

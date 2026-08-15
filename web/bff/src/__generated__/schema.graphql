@@ -1,0 +1,114 @@
+# @generated - This file is generated, DO NOT modify it directly!
+
+type Author {
+  bio: String
+  books: [Book!]
+  created_time: Int
+  id: ID
+  name: String
+}
+
+type Book {
+  authors: [Author!]
+  created_time: Int
+  id: ID
+  is_favorited: Boolean
+  publication_year: Int
+  publisher: Publisher
+  title: String
+}
+
+type CreatePersonalAccessTokenResult {
+  id: ID
+  label: String
+  token: String
+}
+
+type Favorite {
+  book: Book
+  created_time: Int
+  id: ID
+}
+
+type Mutation {
+  create_author(bio: String, name: String!): Author
+  create_book(author_ids: [ID!]!, publication_year: Int, publisher_id: ID!, title: String!): Book
+  create_personal_access_token(label: String!): CreatePersonalAccessTokenResult
+  create_publisher(name: String!): Publisher
+  logout: Boolean
+
+  """No-op mutation for schema compatibility (e.g. Relay)."""
+  noop: Boolean
+  revoke_personal_access_token(id: ID!): Boolean
+  toggle_favorite_book(book_id: ID!): Book
+}
+
+type PageInfo {
+  endCursor: ID
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: ID
+}
+
+type PersonalAccessToken {
+  created_time: Int
+  id: ID
+  label: String
+  last_used_time: Int
+}
+
+type Publisher {
+  books: [Book!]
+  created_time: Int
+  id: ID
+  name: String
+}
+
+type Query {
+  author(id: ID!): Author
+  authors: [Author!]
+  book(id: ID!): Book
+  books(after: ID, before: ID, first: Int, last: Int): QueryBooksConnection
+  current_user: User
+  my_personal_access_tokens: [PersonalAccessToken!]
+
+  """No-op query for schema compatibility (e.g. Relay)."""
+  noop: Boolean
+  publisher(id: ID!): Publisher
+  publishers: [Publisher!]
+  user(id: ID!): User
+  user_by_username(username: String!): User
+}
+
+type QueryBooksConnection {
+  edges: [QueryBooksConnectionEdge]
+  pageInfo: PageInfo!
+}
+
+type QueryBooksConnectionEdge {
+  cursor: ID!
+  node: Book
+}
+
+type User {
+  created_time: Int
+  favorites(after: ID, before: ID, first: Int, last: Int): UserFavoritesConnection
+  first_name: String
+  id: ID
+  is_deleted: Boolean
+  last_name: String
+  primary_email: String
+  updated_time: Int
+  username: String
+}
+
+type UserFavoritesConnection {
+  edges: [UserFavoritesConnectionEdge]
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type UserFavoritesConnectionEdge {
+  cursor: ID!
+  node: Favorite
+}
