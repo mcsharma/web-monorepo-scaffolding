@@ -2,7 +2,6 @@ import { builder } from '../builder.js'
 
 // Import all schema modules — each registers its types and queries on the shared builder.
 import './user.js'
-import './personal_access_token.js'
 import './publisher.js'
 import './author.js'
 import './book.js'

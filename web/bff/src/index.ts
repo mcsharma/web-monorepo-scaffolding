@@ -9,7 +9,6 @@ import './pothos/schema/index.js'
 import { prisma } from './prisma/db.js'
 import { googleAuthRouter } from './auth/google.js'
 import { SESSION_COOKIE, resolveSession } from './auth/session.js'
-import { resolvePersonalAccessToken } from './auth/personal-access-token.js'
 import { writeFileSync } from 'node:fs'
 import { printSchema, lexicographicSortSchema } from 'graphql'
 import path from 'node:path'
@@ -95,14 +94,6 @@ const yoga = createYoga<ExpressServerContext>({
   schema: builder.toSchema(),
   graphqlEndpoint: '/graphql',
   context: async (ctx) => {
-    // Bearer token (a PersonalAccessToken) for API clients — the web UI
-    // keeps using the session cookie below.
-    const authHeader = ctx.req.header('authorization')
-    if (authHeader?.startsWith('Bearer ')) {
-      const user = await resolvePersonalAccessToken(authHeader.slice('Bearer '.length))
-      return { prisma, req: ctx.req, res: ctx.res, user, session: null }
-    }
-
     const rawToken = ctx.req.cookies?.[SESSION_COOKIE]
     const { user, session } = rawToken
       ? await resolveSession(rawToken)

@@ -15,7 +15,6 @@ import BooksListPageQueryNode from "./pages/__generated__/BooksListPageQuery.gra
 import BookPageQueryNode from "./pages/__generated__/BookPageQuery.graphql";
 import NewBookPageQueryNode from "./pages/__generated__/NewBookPageQuery.graphql";
 import FavoritesPageQueryNode from "./pages/__generated__/FavoritesPageQuery.graphql";
-import TokensPageQueryNode from "./pages/__generated__/TokensPageQuery.graphql";
 
 /**
  * Thin wrapper for the pathless layout route — reads the preloaded query ref
@@ -84,13 +83,6 @@ export const router = createBrowserRouter([
         Component: React.lazy(() => import("./pages/FavoritesPage")),
         loader: () => ({
           favoritesQueryRef: loadQuery(RelayEnv, FavoritesPageQueryNode, {}),
-        }),
-      },
-      {
-        path: "settings/tokens",
-        Component: React.lazy(() => import("./pages/TokensPage")),
-        loader: () => ({
-          tokensQueryRef: loadQuery(RelayEnv, TokensPageQueryNode, {}),
         }),
       },
     ],

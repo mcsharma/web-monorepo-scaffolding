@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 import { graphql, useFragment } from "react-relay";
-import { CircleUserRound, Heart, Key, LogOut, Plus } from "lucide-react";
+import { CircleUserRound, Heart, LogOut, Plus } from "lucide-react";
 import type { AppNavBar_user$key } from "./__generated__/AppNavBar_user.graphql";
 import { Button } from "./ui/button";
 import {
@@ -88,10 +88,6 @@ const AppNavBar = ({ currentUser: currentUserRef, onLogout }: AppNavBarProps) =>
                 <DropdownMenuItem render={<Link to="/favorites" />}>
                   <Heart className="size-4" />
                   Favorites
-                </DropdownMenuItem>
-                <DropdownMenuItem render={<Link to="/settings/tokens" />}>
-                  <Key className="size-4" />
-                  Personal Access Tokens
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={onLogout}>

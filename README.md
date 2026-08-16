@@ -86,9 +86,8 @@ Google OAuth (`web/bff/src/auth/google.ts`) needs your own credentials —
 create an OAuth client at Google Cloud Console > Google Auth Platform >
 Clients, and set `GOOGLE_CLIENT_ID`/`GOOGLE_CLIENT_SECRET`/
 `GOOGLE_REDIRECT_URI` in `web/bff/.env`. Nothing about login works until
-these are real. Session cookies and Personal Access Tokens (see
-`TokensPage.tsx`, `/settings/tokens`) work out of the box once you have at
-least one user in the database (e.g. via `prisma/seed.ts`).
+these are real. Session cookies work out of the box once you have at least
+one user in the database (e.g. via `prisma/seed.ts`).
 
 ## Quick start (new laptop)
 

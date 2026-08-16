@@ -19,12 +19,6 @@ type Book {
   title: String
 }
 
-type CreatePersonalAccessTokenResult {
-  id: ID
-  label: String
-  token: String
-}
-
 type Favorite {
   book: Book
   created_time: Int
@@ -34,13 +28,11 @@ type Favorite {
 type Mutation {
   create_author(bio: String, name: String!): Author
   create_book(author_ids: [ID!]!, publication_year: Int, publisher_id: ID!, title: String!): Book
-  create_personal_access_token(label: String!): CreatePersonalAccessTokenResult
   create_publisher(name: String!): Publisher
   logout: Boolean
 
   """No-op mutation for schema compatibility (e.g. Relay)."""
   noop: Boolean
-  revoke_personal_access_token(id: ID!): Boolean
   toggle_favorite_book(book_id: ID!): Book
 }
 
@@ -49,13 +41,6 @@ type PageInfo {
   hasNextPage: Boolean!
   hasPreviousPage: Boolean!
   startCursor: ID
-}
-
-type PersonalAccessToken {
-  created_time: Int
-  id: ID
-  label: String
-  last_used_time: Int
 }
 
 type Publisher {
@@ -71,7 +56,6 @@ type Query {
   book(id: ID!): Book
   books(after: ID, before: ID, first: Int, last: Int): QueryBooksConnection
   current_user: User
-  my_personal_access_tokens: [PersonalAccessToken!]
 
   """No-op query for schema compatibility (e.g. Relay)."""
   noop: Boolean
