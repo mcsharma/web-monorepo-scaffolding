@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 import { graphql, useFragment } from "react-relay";
-import { CircleUserRound, Heart, LogOut, Plus } from "lucide-react";
+import { CircleUserRound, Heart, LogOut } from "lucide-react";
 import type { AppNavBar_user$key } from "./__generated__/AppNavBar_user.graphql";
 import { Button } from "./ui/button";
 import {
@@ -67,36 +67,30 @@ const AppNavBar = ({ currentUser: currentUserRef, onLogout }: AppNavBarProps) =>
         </nav>
 
         {currentUser ? (
-          <>
-            <Button variant="outline" size="sm" render={<Link to="/books/new" />}>
-              <Plus className="size-4" />
-              New Book
-            </Button>
-            <DropdownMenu>
-              <DropdownMenuTrigger
-                render={
-                  <Button variant="ghost" size="icon-md" aria-label="Account menu" className="rounded-full">
-                    <CircleUserRound className="size-5 text-muted-foreground" />
-                  </Button>
-                }
-              />
-              <DropdownMenuContent align="end">
-                <DropdownMenuLabel className="font-normal text-muted-foreground">
-                  Signed in as {currentUser.first_name ?? currentUser.username}
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem render={<Link to="/favorites" />}>
-                  <Heart className="size-4" />
-                  Favorites
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={onLogout}>
-                  <LogOut className="size-4" />
-                  Logout
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </>
+          <DropdownMenu>
+            <DropdownMenuTrigger
+              render={
+                <Button variant="ghost" size="icon-md" aria-label="Account menu" className="rounded-full">
+                  <CircleUserRound className="size-5 text-muted-foreground" />
+                </Button>
+              }
+            />
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel className="font-normal text-muted-foreground">
+                Signed in as {currentUser.first_name ?? currentUser.username}
+              </DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem render={<Link to="/favorites" />}>
+                <Heart className="size-4" />
+                Favorites
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={onLogout}>
+                <LogOut className="size-4" />
+                Logout
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         ) : (
           <Button render={<Link to="/login" />}>Login</Button>
         )}
